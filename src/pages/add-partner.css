@@ -1,0 +1,9 @@
+.main{
+    width: 90vw;
+    margin: 200px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
