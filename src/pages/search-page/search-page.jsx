@@ -1,9 +1,9 @@
 import React from 'react';
-import AsideMenu from '../components/AsideMenu';
-import EvaluatePlatform from '../components/evaluateApp';
-import Footer from '../components/footer';
-import HedaerBloc from '../components/Header';
-import PartnersSearchGridList from '../components/PartnersSearchGridList';
+import AsideMenu from '../../components/AsideMenu/AsideMenu';
+import EvaluatePlatform from '../../components/evaluateApp/evaluateApp';
+import Footer from '../../components/footer/footer';
+import HedaerBloc from '../../components/Header/Header';
+import PartnersSearchGridList from '../../components/PartnersSearchGridList/PartnersSearchGridList';
 
 export default class SearchPage extends React.Component {
 

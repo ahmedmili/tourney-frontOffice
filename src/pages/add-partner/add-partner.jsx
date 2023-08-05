@@ -1,6 +1,6 @@
 import React from 'react';
-import Footer from '../components/footer';
-import HedaerBloc from '../components/Header';
+import Footer from '../../components/footer/footer';
+import HedaerBloc from '../../components/Header/Header';
 import './add-partner.css'
 
 export default class AddNewPartnerPage extends React.Component {

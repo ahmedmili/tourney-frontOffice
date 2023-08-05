@@ -1,7 +1,7 @@
 import React from 'react';
-import AsideMenu from '../components/AsideMenu';
-import Footer from '../components/footer';
-import HedaerBloc from '../components/Header'; 
+import AsideMenu from '../../components/AsideMenu/AsideMenu';
+import Footer from '../../components/footer/footer';
+import HedaerBloc from '../../components/Header/Header'; 
 
 export default class PartnersDetailsPage extends React.Component {
 

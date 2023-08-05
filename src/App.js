@@ -4,40 +4,41 @@
 import React from 'react';
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
-  Link
 } from "react-router-dom";
-import HomePage from './pages/Home';
-import AuthPage from './pages/Auth';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import HomePage from './pages/home/Home';
+import AuthPage from './pages/Auth/Auth';
 
 
 // import ClientsPage from './pages/clients';
 // import AddNewClient from './pages/add-client';
-import CreateAccountPage from './pages/create-account';
-import SearchPage from './pages/search-page';
-import PartnersDetailsPage from './pages/searvice-details-page';
-import ProfilePage from './pages/Profile';
-import AddPartnairePage from './pages/add-partner';
+import CreateAccountPage from './pages/create-account/create-account';
+import SearchPage from './pages/search-page/search-page';
+import PartnersDetailsPage from './pages/searvice-details-page/searvice-details-page';
+import ProfilePage from './pages/Profile/Profile';
+import AddPartnairePage from './pages/add-partner/add-partner';
 
 
-function App() {
+export default function App() {
   return (
     <div >
-
+      <ToastContainer />
       <Router>
-        <Switch>
-          <Route path="/" component={HomePage} exact />
-          <Route path={'/search'} component={SearchPage} exact />
-          <Route path={'/addPartenaire'} component={AddPartnairePage} exact />
-          <Route path={'/partners/:id'} component={PartnersDetailsPage} exact />
-          <Route path={'/profile'} component={ProfilePage} exact />
-          <Route path="/auth" component={AuthPage} exact />
-          <Route path="/create-account" component={CreateAccountPage} exact />
-        </Switch>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path={'/search'} element={<SearchPage />} />
+          <Route path={'/addPartenaire'} element={<AddPartnairePage />} />
+          <Route path={'/partners/:id'} element={<PartnersDetailsPage />} />
+          <Route path={'/profile'} element={<ProfilePage />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/create-account" element={<CreateAccountPage />} />
+        </Routes>
       </Router>
     </div>
-
   );
 }
 
