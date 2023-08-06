@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+// import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import { sliderData } from "../../slider-data";
 import {Link} from 'react-router-dom'
 import "./Slider.css";
@@ -39,8 +39,8 @@ const Slider = () => {
 
   return (
     <div className="slider">
-      <AiOutlineArrowLeft className="arrow prev" onClick={prevSlide} />
-      <AiOutlineArrowRight className="arrow next" onClick={nextSlide} />
+      {/* <AiOutlineArrowLeft className="arrow prev" onClick={prevSlide} />
+      <AiOutlineArrowRight className="arrow next" onClick={nextSlide} /> */}
       {sliderData.map((slide, index) => {
         return (
           <div
