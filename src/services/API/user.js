@@ -46,4 +46,33 @@ async function getUser(user_id) {
     }
 }
 
-export const userService = { loginUser, registerUser, getUser };
+async function getRegions() {
+    try {
+        const response = await api.get(`regions/list`,);
+        const { success, data, code } = response.data;
+        return { success, data, code };
+    } catch (error) {
+        throw error;
+    }
+}
+
+async function addPartner(value) {
+    const data = value;
+    try {
+        const response = await api.post("partners/add",data);
+        const { success, code,message } = response.data;
+        return { success, code,message };
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+
+export const userService = {
+    loginUser,
+    registerUser,
+    getUser,
+    getRegions,
+    addPartner
+};

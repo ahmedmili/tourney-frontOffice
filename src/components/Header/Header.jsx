@@ -6,7 +6,7 @@ export default function HedaerBloc() {
   const loggedIn = localStorageService.getUserToken() ? true : false;
   
   function LogOut() {
-    localStorageService.setUserToken('')
+    localStorageService.unsetUserCredentials()
     navigate('/')
   }
 

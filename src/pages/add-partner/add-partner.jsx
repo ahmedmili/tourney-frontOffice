@@ -1,188 +1,104 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from '../../components/footer/footer';
 import HedaerBloc from '../../components/Header/Header';
 import './add-partner.css'
+import { useNavigate } from 'react-router-dom';
+import { localStorageService } from '../../services/localStorageService'
+import { userService } from '../../services/API/user';
+import { toast } from 'react-toastify';
+function AddNewPartnerPage() {
+    const [name, setName] = useState('');
+    const [logo_url, setLogo_url] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [website, setWebsite] = useState('');
+    const [about, setAbout] = useState('');
+    const [region_id, setRegion_id] = useState('');
+    const [errMSG, setErrMSG] = useState('');
+    const [succMSG, setSuccMSG] = useState('');
+    const [regions, setRegions] = useState([]);
+    const Navigate = useNavigate();
 
-export default class AddNewPartnerPage extends React.Component {
 
-
-  constructor(){
-    super();
-    this.state = {
-        name:'',
-        logo_url:'',
-        phone:'',
-        email:'',
-        website:'',
-        about:'', 
-        region_id:'',
-
-
-        errMSG:'',
-        succMSG:'',
-        
-
-        regions: []
-        
+    function checkUserAuth() {
+        localStorageService.getUserToken() == '' && Navigate('/auth')
     }
-  }
 
-  checkUserAuth(){
-    if (localStorage.getItem('token') == null) {
-      this.props.history.push('/auth');
+    function iniData() {
+        userService.getRegions().then(res => {
+            setRegions(res.data)
+        });
+
     }
-  }
+
+    useEffect(() => {
+        checkUserAuth();
+        iniData();
+    }, [])
 
 
-
-  iniData(){
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", localStorage.getItem('token') );
-    myHeaders.append("Content-Type", "application/json");
-
-    var requestOptions = {
-    method: 'GET',
-    headers: myHeaders, 
-    redirect: 'follow'
-    };
-
-    fetch("http://localhost:8080/api/regions/list", requestOptions)
-    .then(response => response.json())
-    .then(result =>{
-
-        console.log(result);
-
-         this.setState({
-             regions: result
-         })
-    })
-    .catch(error => {
-       /*localStorage.clear();
-       this.props.history.push('/auth');*/
-    });
-  }
-
-
-
-
-  componentDidMount(){
-    this.checkUserAuth();
-    this.iniData();
-  }
-
-
-  addData(){
-      // CALL API 
-    
-      this.setState({
-        errMSG:'',
-        succMSG:'',
-          
-      })
-      var myHeaders = new Headers();
-        myHeaders.append("Authorization", localStorage.getItem('token') );
-        myHeaders.append("Content-Type", "application/json");
-
+    function addData() {
         var raw = JSON.stringify(
-            
-            {   
-                
-                name:this.state.name,
-                logo_url:this.state.logo_url,
-                phone:this.state.phone,
-                email:this.state.email,
-                website:this.state.website,
-                about:this.state.about, 
-                region_id:this.state.region_id,
-            
+            {
+                name: name,
+                logo_url: logo_url,
+                phone: phone,
+                email: email,
+                website: website,
+                about: about,
+                region_id: region_id,
             }
-            
-            
-            );
-
-        var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
-        };
-
-        fetch("http://localhost:8080/api/partners/add", requestOptions)
-        .then(response => response.json())
-        .then(result =>{
-            if (result.success === true) {
-                 this.setState({
-                     succMSG: result.message
-                 })
-
-                 setTimeout(() => {
-                     this.props.history.push('/');
-                 }, 2000);
+        );
+        userService.addPartner(raw).then(res => {
+            if (res.success === true) {
+                setSuccMSG(res.message)
+                setTimeout(() => {
+                    Navigate('/')
+                }, 2000);
+                toast.success(res.message)
             } else {
-                this.setState({
-                    errMSG: result.message
-                })
+                setErrMSG(res.message)
+                toast.success(res.message)
             }
         })
-        .catch(error => {
-            this.setState({
-                errMSG: 'Network error.'
-            })
-        });
-        }
-
-
-
-
-  render(){
-    return(
-      <div className="App">
-
-        <HedaerBloc />
-
-        { /* End Sidebar*/}
-
-        <main id="main" className="main"> 
-
-            <div className="card">
-                <div className="card-body">
-                    <h3>Add partenair demande </h3>
-
-
-                    <form onSubmit={ (e)=> { e.preventDefault(); this.addData();  } } >
-
- 
- 
-
-
+    }
+    return (
+        <div className="App">
+            <HedaerBloc />
+            { /* End Sidebar*/}
+            <main id="main" className="main">
+                <div className="card">
+                    <div className="card-body">
+                        <h3>Add partenair demande </h3>
+                        <form onSubmit={(e) => { e.preventDefault(); addData(); }} >
                             <div className="form-group mb-3">
                                 <label htmlFor="">Nom</label>
-                                <input type="text" className='form-control' value={ this.state.name } onChange = { (e)=>{ this.setState({ name: e.target.value }) } } />
+                                <input type="text" className='form-control' value={name} onChange={(e) => { setName(e.target.value) }} />
                             </div>
                             <div className="form-group mb-3">
                                 <label htmlFor="">Photo URL</label>
-                                <input type="text" className='form-control' value={ this.state.logo_url } onChange = { (e)=>{ this.setState({ logo_url: e.target.value }) } } />
+                                <input type="text" className='form-control' value={logo_url} onChange={(e) => { setLogo_url(e.target.value) }} />
                             </div>
-                 
+
                             <div className="form-group mb-3">
                                 <label htmlFor="">email</label>
-                                <input type="text" className='form-control' value={ this.state.email } onChange = { (e)=>{ this.setState({ email: e.target.value }) } } />
+                                <input type="text" className='form-control' value={email} onChange={(e) => { setEmail(e.target.value) }} />
                             </div>
                             <div className="form-group mb-3">
                                 <label htmlFor="">Télephone</label>
-                                <input type="text" className='form-control' value={ this.state.phone } onChange = { (e)=>{ this.setState({ phone: e.target.value }) } } />
+                                <input type="text" className='form-control' value={phone} onChange={(e) => { setPhone(e.target.value) }} />
                             </div>
                             <div className="form-group mb-3">
                                 <label htmlFor="">Site web</label>
-                                <input type="text" className='form-control' value={ this.state.website } onChange = { (e)=>{ this.setState({ website: e.target.value }) } } />
+                                <input type="text" className='form-control' value={website} onChange={(e) => { setWebsite(e.target.value) }} />
                             </div>
                             <div className="form-group mb-3">
                                 <label htmlFor="">Région</label>
-                                <select   className='form-control' value={ this.state.region_id } onChange = { (e)=>{ this.setState({ region_id: e.target.value }) } } >
+                                <select className='form-control' value={region_id} onChange={(e) => { setRegion_id(e.target.value) }} >
 
                                     {
-                                        this.state.regions.map((r)=>{
-                                            return <option value={ r.id_region } >{r.label}</option>
+                                        regions.map((r, index) => {
+                                            return <option value={r.id_region} key={index}>{r.label}</option>
                                         })
                                     }
 
@@ -190,54 +106,38 @@ export default class AddNewPartnerPage extends React.Component {
                             </div>
                             <div className="form-group mb-3">
                                 <label htmlFor="">A propos</label>
-                                <textarea type="text" className='form-control' value={ this.state.about } onChange = { (e)=>{ this.setState({ about: e.target.value }) } } ></textarea>
+                                <textarea type="text" className='form-control' value={about} onChange={(e) => { setAbout(e.target.value) }} ></textarea>
                             </div>
-                            
-                            
-                           
-                           
-
                             <div className="form-group mb-3">
-                               <button type='submit' className='btn btn-success' disabled={ this.state.name ==='' || this.state.logo_url ==='' || this.state.email === ''|| this.state.phone === ''|| this.state.website === ''|| this.state.about === '' }>Ajouter</button>
+                                <button type='submit' className='btn btn-success' disabled={name === '' || logo_url === '' || email === '' || phone === '' || website === '' || about === ''}>Ajouter</button>
                             </div>
-        
-  
-
-
                             {
-                                this.state.errMSG !== '' ?
-                                <div className='alert alert-danger'>{ this.state.errMSG }</div>
-                                :
-                                <div></div>
+                                errMSG !== '' ?
+                                    <div className='alert alert-danger'>{errMSG}</div>
+                                    :
+                                    <div></div>
                             }
-                             {
-                                this.state.succMSG !== '' ?
-                                <div className='alert alert-success'>{ this.state.succMSG }</div>
-                                :
-                                <div></div>
+                            {
+                                succMSG !== '' ?
+                                    <div className='alert alert-success'>{succMSG}</div>
+                                    :
+                                    <div></div>
                             }
-                
-
-                    </form>
-
-
+                        </form>
+                    </div>
                 </div>
-            </div>
- 
-        </main>{ /* End #main */}
 
-        { /* ======= Footer ======= */}
-        <Footer />
+            </main>
+            { /* End #main */}
+            { /* ======= Footer ======= */}
+            <Footer />
+            { /* End Footer */}
+            <a href="#" className="back-to-top d-flex align-items-center justify-content-center"><i className="bi bi-arrow-up-short"></i></a>
+        </div>
 
-        { /* End Footer */}
-
-        <a href="#" className="back-to-top d-flex align-items-center justify-content-center"><i className="bi bi-arrow-up-short"></i></a>
-      </div>
-  
-    );
-  }
- 
-
+    )
 }
+export default AddNewPartnerPage
 
- 
+
+
