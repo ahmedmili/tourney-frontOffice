@@ -17,7 +17,6 @@ function Auth() {
 
     var raw = JSON.stringify({ "email": username, "password": password });
     userService.loginUser(raw).then((res) => {
-      console.log(res)
       if (res.success === true) {
         localStorageService.setUserCredentials(res.user, res.token);
         Navigate("/");
@@ -41,33 +40,6 @@ function Auth() {
 
       }
     })
-
-    // var myHeaders = new Headers();
-    // myHeaders.append("Content-Type", "application/json");
-
-
-    // var requestOptions = {
-    //   method: 'POST',
-    //   headers: myHeaders,
-    //   body: raw,
-    //   redirect: 'follow'
-    // };
-
-    // fetch("http://localhost:8080/api/auth/signin", requestOptions)
-    //   .then(response => response.json())
-    //   .then(result => {
-    //     if (result.success === true) {
-
-    //       localStorage.setItem('token', result.token)
-
-    //       // redirect to home page
-    //       this.props.history.push('/');
-
-    //     } else {
-    //       setErrorMSG(result.message)
-    //     }
-    //   })
-    //   .catch(error => console.log('error', error));
   }
 
 

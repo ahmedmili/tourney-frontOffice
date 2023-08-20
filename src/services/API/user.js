@@ -2,7 +2,7 @@ import api from '../axiosApi';
 
 async function loginUser(values) {
     try {
-        const response = await api.post("/auth/signin", values);
+        const response = await api.post("/clients/login", values);
         if (response.data.success === true) {
             const { token, user, message, success } = response.data;
             return { token, user, message, success };
@@ -16,7 +16,7 @@ async function loginUser(values) {
 }
 async function registerUser(values) {
     try {
-        const response = await api.post("signupclient", {
+        const response = await api.post("clients/signup", {
             firstname: values.firstname,
             lastname: values.lastname,
             email: values.email,
@@ -36,9 +36,7 @@ async function getUser(user_id) {
         if (user_id === undefined) {
             return { status: undefined, data: undefined };
         }
-        const response = await api.get(
-            `getClient/${user_id}`,
-        );
+        const response = await api.get(`getClient/${user_id}`);
         const { status, data } = response;
         return { status, data };
     } catch (error) {
@@ -48,9 +46,28 @@ async function getUser(user_id) {
 
 async function getRegions() {
     try {
-        const response = await api.get(`regions/list`,);
+        const response = await api.get(`regions/`,);
         const { success, data, code } = response.data;
         return { success, data, code };
+    } catch (error) {
+        throw error;
+    }
+}
+async function getMyAgenda() {
+    try {
+        const response = await api.get("partners/agenda",);
+        const { data } = response;
+        return { data };
+    } catch (error) {
+        throw error;
+    }
+}
+async function deleteProgram(id) {
+    try {
+        const response = await api.delete("partners/agenda?id=" + id,);
+        const { success } = response.data;
+
+        return { success };
     } catch (error) {
         throw error;
     }
@@ -59,9 +76,9 @@ async function getRegions() {
 async function addPartner(value) {
     const data = value;
     try {
-        const response = await api.post("partners/add",data);
-        const { success, code,message } = response.data;
-        return { success, code,message };
+        const response = await api.post("partners/create", data);
+        const { success, code, message } = response.data;
+        return { success, code, message };
     } catch (error) {
         throw error;
     }
@@ -74,5 +91,7 @@ export const userService = {
     registerUser,
     getUser,
     getRegions,
+    getMyAgenda,
+    deleteProgram,
     addPartner
 };

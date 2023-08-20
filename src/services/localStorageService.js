@@ -1,7 +1,7 @@
 
 function setUserCredentials(user,token) {
     localStorage.setItem('token', token);
-    localStorage.setItem('userId', user.id.toString());
+    localStorage.setItem('userId', user.id);
     localStorage.setItem('user', JSON.stringify(user));
 }
 function unsetUserCredentials() {

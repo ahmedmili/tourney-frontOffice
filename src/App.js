@@ -13,9 +13,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import HomePage from './pages/home/Home';
 import AuthPage from './pages/Auth/Auth';
 
-
-// import ClientsPage from './pages/clients';
-// import AddNewClient from './pages/add-client';
 import CreateAccountPage from './pages/create-account/create-account';
 import SearchPage from './pages/search-page/search-page';
 import PartnersDetailsPage from './pages/searvice-details-page/searvice-details-page';

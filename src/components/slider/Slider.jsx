@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 // import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import { sliderData } from "../../slider-data";
-import {Link} from 'react-router-dom'
+import {Link, NavLink} from 'react-router-dom'
 import "./Slider.css";
 
 const Slider = () => {
@@ -15,11 +15,6 @@ const Slider = () => {
   const nextSlide = () => {
     setCurrentSlide(currentSlide === slideLength - 1 ? 0 : currentSlide + 1);
     console.log("next");
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide(currentSlide === 0 ? slideLength - 1 : currentSlide - 1);
-    console.log("prev");
   };
 
   function auto() {
@@ -39,27 +34,26 @@ const Slider = () => {
 
   return (
     <div className="slider">
-      {/* <AiOutlineArrowLeft className="arrow prev" onClick={prevSlide} />
-      <AiOutlineArrowRight className="arrow next" onClick={nextSlide} /> */}
       {sliderData.map((slide, index) => {
         return (
           <div
             className={index === currentSlide ? "slide current" : "slide"}
             key={index}
           >
-            {index === currentSlide && (
               <div>
                 <img src={slide.image} alt="slide" className="image" />
                 <div className="content">
                   <h2>{slide.heading}</h2>
                   <p>{slide.desc}</p>
                   <hr />
-                    <button as={Link} to={'/search'} >commancer</button>  
                  
-                  {/* <Link to={'/search'}>Get Started</Link> */}
+                  <NavLink to={'/search'}>
+                    <button  >commancer</button>  
+                    
+
+                  </NavLink>
                 </div>
               </div>
-            )}
           </div>
         );
       })}

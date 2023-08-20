@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function HedaerBloc() {
   const navigate = useNavigate();
   const loggedIn = localStorageService.getUserToken() ? true : false;
-  
+
   function LogOut() {
     localStorageService.unsetUserCredentials()
     navigate('/')
@@ -18,7 +18,7 @@ export default function HedaerBloc() {
           <span></span>
           <span></span>
         </button>
-        <a className="navbar-brand text-brand" href="index.html">Tourney<span className="color-b">platform</span></a>
+        <a className="navbar-brand text-brand" href="#">Tourney<span className="color-b">platform</span></a>
 
         <div className="navbar-collapse collapse justify-content-center" id="navbarDefault">
           <ul className="navbar-nav">
@@ -39,13 +39,16 @@ export default function HedaerBloc() {
               <Link className="nav-link" to={'/addPartenaire'}>Contact </Link>
             </li>
             <li className="nav-item">
-              <Link to={'/auth'} className="nav-link ">Profile </Link>
+              <Link to={'/profile'} className="nav-link ">Profile </Link>
             </li>
           </ul>
         </div>
-        <button type="button" className="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
-          <i className="bi bi-search"></i>
-        </button>
+        <Link className="nav-link" to={"/search"}>
+
+          <button type="button" className="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
+            <i className="bi bi-search"></i>
+          </button>
+        </Link>
       </div>
     </nav>
   );

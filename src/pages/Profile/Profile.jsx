@@ -2,67 +2,33 @@ import React, { useEffect, useState } from 'react';
 import EvaluatePlatform from '../../components/evaluateApp/evaluateApp';
 import Footer from '../../components/footer/footer';
 import HedaerBloc from '../../components/Header/Header';
-
+import { useNavigate } from 'react-router-dom'
+import { userService } from '../../services/API/user';
+import { toast } from 'react-toastify';
 export default function Profile() {
+  const navigate = useNavigate()
+  const [programs, setPrograms] = useState([]);
 
-  const [ programs, setParams] = useState([]);
-
- function checkUserAuth(){
+  function checkUserAuth() {
     if (localStorage.getItem('token') == null) {
-      this.props.history.push('/auth');
+      navigate('/auth');
+
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getMyAgenda()
-  },[])
+  }, [])
 
-  function getMyAgenda(){
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", localStorage.getItem('token'));
-    myHeaders.append("Content-Type", "application/json");
+  async function getMyAgenda() {
 
-    var requestOptions = {
-      method: 'GET',
-      headers: myHeaders,
-      redirect: 'follow'
-    };
-
-    fetch("http://localhost:8080/api/calendar/get-my-agenda", requestOptions)
-      .then(response => response.json())
-      .then(result => {
-
-        console.log(result);
-
-        this.setState({
-          programs: result
-        })
-      })
-      .catch(error => {
-
-      });
+    const { data } = await userService.getMyAgenda()
+    setPrograms(data.data)
   }
 
-  function deleteProgram(id){
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", localStorage.getItem('token'));
-    myHeaders.append("Content-Type", "application/json");
-
-    var requestOptions = {
-      method: 'GET',
-      headers: myHeaders,
-      redirect: 'follow'
-    };
-
-    fetch("http://localhost:8080/api/calendar/delete-program?id=" + id, requestOptions)
-      .then(response => response.json())
-      .then(result => {
-
-        this.getMyAgenda();
-      })
-      .catch(error => {
-
-      });
+  async function deleteProgram(id) {
+    const { success } = await userService.deleteProgram(id)
+    success == true ? toast.success("success") : toast.error("delation failed")
   }
   return (
     <div >
@@ -97,7 +63,7 @@ export default function Profile() {
           <h3>Mon agenda</h3>
           <ul className="list-group">
             {
-              this.state.programs.map((p) => {
+              programs.map((p) => {
                 return (
                   <li className="list-group-item">
                     <div className="d-flex">
@@ -115,7 +81,7 @@ export default function Profile() {
                           <div className="delete">
                             <i class="bi bi-trash text-danger" style={{ fontSize: 30 }} onClick={() => {
                               const id = p.id_prog;
-                              this.deleteProgram(id);
+                              deleteProgram(id);
                             }}  ></i>
                           </div>
                         </div>
@@ -132,6 +98,6 @@ export default function Profile() {
     </div>
   );
 }
-     
+
 
 
