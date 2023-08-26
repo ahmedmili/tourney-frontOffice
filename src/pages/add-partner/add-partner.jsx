@@ -6,9 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import { localStorageService } from '../../services/localStorageService'
 import { userService } from '../../services/API/user';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 function AddNewPartnerPage() {
     const [name, setName] = useState('');
-    const [logo_url, setLogo_url] = useState('');
+    // const [logo_url, setLogo_url] = useState('');
+    const [selectedFile, setSelectedFile] = useState(null);
+
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
     const [website, setWebsite] = useState('');
@@ -19,10 +22,19 @@ function AddNewPartnerPage() {
     const [regions, setRegions] = useState([]);
     const Navigate = useNavigate();
 
+    const [previewImage, setPreviewImage] = useState(null);
 
     function checkUserAuth() {
         localStorageService.getUserToken() == '' && Navigate('/auth')
     }
+    //upload file
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        setSelectedFile(file);
+        setPreviewImage(URL.createObjectURL(file)); // Create temporary URL for preview
+
+    };
+
 
     function iniData() {
         userService.getRegions().then(res => {
@@ -36,20 +48,24 @@ function AddNewPartnerPage() {
         iniData();
     }, [])
 
+    const handleUpload = async () => {
+        if (!selectedFile) {
+            return;
+        }
 
-    function addData() {
-        var raw = JSON.stringify(
-            {
-                name: name,
-                logo_url: logo_url,
-                phone: phone,
-                email: email,
-                website: website,
-                about: about,
-                region_id: region_id,
-            }
-        );
-        userService.addPartner(raw).then(res => {
+    }
+    async function addData() {
+        const formData = new FormData();
+        formData.append('image', selectedFile);
+        formData.append('name', name);
+        formData.append('phone', phone);
+        formData.append('email', email);
+        formData.append('website', website);
+        // formData.append('map', map);
+        formData.append('about', about);
+        formData.append('region_id', region_id);
+      
+        userService.addPartner(formData).then(res => {
             if (res.success === true) {
                 setSuccMSG(res.message)
                 setTimeout(() => {
@@ -77,7 +93,10 @@ function AddNewPartnerPage() {
                             </div>
                             <div className="form-group mb-3">
                                 <label htmlFor="">Photo URL</label>
-                                <input type="text" className='form-control' value={logo_url} onChange={(e) => { setLogo_url(e.target.value) }} />
+                                <input type="file" className='form-control' onChange={handleFileChange} />
+                            </div>
+                            <div className="form-group mb-3">
+                                <img src={previewImage} alt="upload image" />
                             </div>
 
                             <div className="form-group mb-3">
@@ -109,7 +128,7 @@ function AddNewPartnerPage() {
                                 <textarea type="text" className='form-control' value={about} onChange={(e) => { setAbout(e.target.value) }} ></textarea>
                             </div>
                             <div className="form-group mb-3">
-                                <button type='submit' className='btn btn-success' disabled={name === '' || logo_url === '' || email === '' || phone === '' || website === '' || about === ''}>Ajouter</button>
+                                <button type='submit' className='btn btn-success' disabled={name === '' || selectedFile === null || email === '' || phone === '' || website === '' || about === ''}>Ajouter</button>
                             </div>
                             {
                                 errMSG !== '' ?
@@ -129,9 +148,7 @@ function AddNewPartnerPage() {
 
             </main>
             { /* End #main */}
-            { /* ======= Footer ======= */}
             <Footer />
-            { /* End Footer */}
             <a href="#" className="back-to-top d-flex align-items-center justify-content-center"><i className="bi bi-arrow-up-short"></i></a>
         </div>
 

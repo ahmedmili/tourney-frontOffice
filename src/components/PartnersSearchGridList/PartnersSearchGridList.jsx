@@ -5,7 +5,7 @@ export default function PartnersSearchGridList(props){
             <div class="col-md-4 mb-3">
             <div class="card-box-b card-shadow news-box">
               <div class="img-box-b">
-                <img src={ props.data.logo_url } alt="" class="img-b img-fluid"/>
+                <img src={process.env.REACT_APP_IMAGE_BASE_URL+props.data.logo_url } alt="" class="img-b img-fluid"/>
               </div>
               <div class="card-overlay">
                 <div class="card-header-b">

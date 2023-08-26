@@ -46,7 +46,7 @@ async function getUser(user_id) {
 
 async function getRegions() {
     try {
-        const response = await api.get(`regions/`,);
+        const response = await api.get(`/regions/`,);
         const { success, data, code } = response.data;
         return { success, data, code };
     } catch (error) {
@@ -76,7 +76,13 @@ async function deleteProgram(id) {
 async function addPartner(value) {
     const data = value;
     try {
-        const response = await api.post("partners/create", data);
+        const response = await api.post("partners/create", data,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }
+        );
         const { success, code, message } = response.data;
         return { success, code, message };
     } catch (error) {

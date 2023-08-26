@@ -68,7 +68,7 @@ export default function Profile() {
                   <li className="list-group-item">
                     <div className="d-flex">
                       <div>
-                        <img src={p.logo_url} width={80} style={{ marginRight: 25 }} alt="" />
+                        <img src={process.env.REACT_APP_IMAGE_BASE_URL+p.logo_url} width={80} style={{ marginRight: 25 }} alt="" />
                       </div>
                       <div className='w-100'>
                         <div className='d-flex justify-content-between'>
