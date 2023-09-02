@@ -1,0 +1,25 @@
+.forgetPasswordlink {
+    color: aqua;
+    transition: all 1s;
+width:9rem;
+}
+
+.forgetPasswordlink:hover {
+    cursor: pointer;
+    color: greenyellow;
+}
+
+.popup-container{
+    background-color: rgba(0, 0, 0, 0.397);
+    width: 100vw;
+    height: 120vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+}                       
+.popup-container .forget-password-popup{
+    background-color: white;
+}                       

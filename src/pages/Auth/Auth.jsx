@@ -7,16 +7,18 @@ import {
   useNavigate
 } from "react-router-dom"
 import * as Yup from 'yup';
-
+import ForgetPassword from '../../components/ForgetPassword/ForgetPassword';
+import "./Auth.css"
 function Auth() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMSG, setErrorMSG] = useState('');
+  const [forgetPassword, setForgetPassword] = useState(false);
   const [errors, setErrors] = useState({});
 
   const Navigate = useNavigate();
 
-  
+
   const validationSchema = Yup.object().shape({
     username: Yup.string().required('username is required'),
     password: Yup.string()
@@ -70,6 +72,10 @@ function Auth() {
       });
     }
   };
+
+  const handeForgetPasswordClick = () => {
+    setForgetPassword((current) => !current)
+  }
   const hasErrors = Object.values(errors).some((error) => error !== null);
 
   return (
@@ -112,6 +118,7 @@ function Auth() {
                     <div className="col-12">
                       vous n'avez pas de compte ? <Link to={'/create-account'}>créer un compte gratuitement</Link>
                     </div>
+                    <p onClick={handeForgetPasswordClick} className='forgetPasswordlink'>Forget Password?</p>
                     {
                       errorMSG !== '' ?
                         <div className='alert alert-danger mt-3'>{errorMSG}</div>
@@ -125,6 +132,15 @@ function Auth() {
           </div>
         </div>
       </section>
+      {
+        forgetPassword &&
+
+        (
+          <div className='popup-container'>
+            <ForgetPassword className="forget-password-popup" />
+          </div>
+        )
+      }
     </div>
   );
 }
