@@ -15,18 +15,21 @@ async function loginUser(values) {
     }
 }
 async function registerUser(values) {
+    // console.log(values)
     try {
         const response = await api.post("clients/signup", {
-            firstname: values.firstname,
-            lastname: values.lastname,
+            fullname: values.fullname,
+            lastName: values.lastName,
             email: values.email,
             password: values.password,
             confirm_password: values.passwordConfirm,
             phone: values.phone,
         }, { authorization: false });
-        const token = response.data.data.token;
-        const user = response.data.data.client;
-        return { token, user };
+        const message = response.data.message;
+        if (response.data.status == 200) {
+            return { success: true, message: message }
+        }else
+            return {success:false,message:message}
     } catch (error) {
         throw error;
     }

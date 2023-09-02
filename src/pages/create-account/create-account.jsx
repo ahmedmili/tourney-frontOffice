@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 // import { object, string, number, date, InferType } from 'yup';
 import * as Yup from 'yup';
+import { userService } from '../../services/API/user';
 
 export default function CreateAccountPage() {
 
@@ -11,7 +12,7 @@ export default function CreateAccountPage() {
   const [name, setName] = useState('')
   const [lastName, setLastName] = useState('')
   const [password, setPassword] = useState('')
-  const [confirmpassword, setConfirmpassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [errorMSG, setErrorMSG] = useState('')
@@ -28,9 +29,9 @@ export default function CreateAccountPage() {
     password: Yup.string()
       .min(8, 'Password must be at least 8 characters')
       .required('Password is required'),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref('password'), null], 'Passwords must match')
-      .required('Confirm password is required'),
+    // confirmPassword: Yup.string()
+    //   .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    //   .required('Confirm password is required'),
     phone: Yup.string()
       .matches(
         /^[0-9]{8}$/,
@@ -41,17 +42,16 @@ export default function CreateAccountPage() {
 
   const handleBlur = async (e) => {
     const { name, value } = e.target;
-    // console.log(name)
 
+    console.log(name)
+    console.log(value)
     try {
       await Yup.reach(validationSchema, name).validate(value);
-// console.log(value)
-// toast.error(error)
-setErrors({
-  ...errors,
-  [name]: null,
-});
-} catch (error) {
+      setErrors({
+
+      });
+      setErrorMSG('')
+    } catch (error) {
       console.log(error.message)
       toast.error(error)
       setErrorMSG(error.message)
@@ -63,43 +63,28 @@ setErrors({
   };
 
 
-  const createAccount = () => {
-    setErrorMSG('')
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+  const createAccount = async () => {
 
-    var raw = JSON.stringify({
+    setErrorMSG('')
+
+    var raw = {
       "fullname": name,
+      "lastName": lastName,
       "password": password,
       "email": email,
-      "lastName": lastName
-    });
-
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow'
+      "phone": phone,
     };
-    if (!(password == confirmpassword)) {
-      setErrorMSG('mot de passe n\'est pas identique ')
 
+    const { success, message } = await userService.registerUser(raw)
+    if (success === true) {
+      navigate('/auth')
     } else {
-
-
-      fetch("http://localhost:8080/api/auth/create-account", requestOptions)
-        .then(response => response.json())
-        .then(result => {
-          if (result.success === true) {
-            navigate('/auth')
-          } else {
-            setErrorMSG(result.message)
-          }
-        })
-        .catch(error => setErrorMSG('Something went wrong'));
+      setErrorMSG(message)
     }
+
   }
 
+  const hasErrors = Object.values(errors).some((error) => error !== null);
 
   return (
     <div className="container">
@@ -122,7 +107,6 @@ setErrors({
 
                   <div className="pt-4 pb-2">
                     <h5 className="card-title text-center pb-0 fs-4">Create Your Account</h5>
-                    <p className="text-center small">Enter your email username & password to create your account</p>
                   </div>
 
                   <form className="row g-3 needs-validation" novalidate onSubmit={(e) => {
@@ -164,7 +148,7 @@ setErrors({
 
                     <div className="col-12">
                       <label htmlFor="confirmPassword" className="form-label">confirmé mot de passe</label>
-                      <input onBlur={handleBlur} type="password" name="confirmPassword" className="form-control" id="confirmPassword" onChange={(e) => { setConfirmpassword(e.target.value) }} value={confirmpassword} />
+                      <input type="password" name="confirmPassword" className="form-control" id="confirmPassword" onChange={(e) => { setConfirmPassword(e.target.value) }} value={confirmPassword} />
                       <div className="invalid-feedback">Please enter your password again!</div>
                     </div>
 
@@ -175,7 +159,7 @@ setErrors({
                     </div>
 
                     <div className="col-12">
-                      <button className="btn btn-primary w-100" type="submit" disabled={name === '' || lastName === '' || password === '' || confirmpassword === '' || email === '' || phone === ''} >Create account</button>
+                      <button className="btn btn-primary w-100" type="submit" disabled={hasErrors} >Create account</button>
                     </div>
 
                     {
