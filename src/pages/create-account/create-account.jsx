@@ -29,9 +29,6 @@ export default function CreateAccountPage() {
     password: Yup.string()
       .min(8, 'Password must be at least 8 characters')
       .required('Password is required'),
-    // confirmPassword: Yup.string()
-    //   .oneOf([Yup.ref('password'), null], 'Passwords must match')
-    //   .required('Confirm password is required'),
     phone: Yup.string()
       .matches(
         /^[0-9]{8}$/,
@@ -42,9 +39,6 @@ export default function CreateAccountPage() {
 
   const handleBlur = async (e) => {
     const { name, value } = e.target;
-
-    console.log(name)
-    console.log(value)
     try {
       await Yup.reach(validationSchema, name).validate(value);
       setErrors({

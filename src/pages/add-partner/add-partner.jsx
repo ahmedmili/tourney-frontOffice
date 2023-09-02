@@ -6,7 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { localStorageService } from '../../services/localStorageService'
 import { userService } from '../../services/API/user';
 import { toast } from 'react-toastify';
-import axios from 'axios';
+import * as Yup from 'yup'; // Import Yup
+
 function AddNewPartnerPage() {
     const [name, setName] = useState('');
     // const [logo_url, setLogo_url] = useState('');
@@ -19,6 +20,8 @@ function AddNewPartnerPage() {
     const [region_id, setRegion_id] = useState('');
     const [errMSG, setErrMSG] = useState('');
     const [succMSG, setSuccMSG] = useState('');
+    const [errors, setErrors] = useState({});
+
     const [regions, setRegions] = useState([]);
     const Navigate = useNavigate();
 
@@ -52,8 +55,9 @@ function AddNewPartnerPage() {
         if (!selectedFile) {
             return;
         }
-
     }
+
+
     async function addData() {
         const formData = new FormData();
         formData.append('image', selectedFile);
@@ -64,7 +68,7 @@ function AddNewPartnerPage() {
         // formData.append('map', map);
         formData.append('about', about);
         formData.append('region_id', region_id);
-      
+
         userService.addPartner(formData).then(res => {
             if (res.success === true) {
                 setSuccMSG(res.message)
@@ -78,6 +82,37 @@ function AddNewPartnerPage() {
             }
         })
     }
+
+    const validationSchema = Yup.object().shape({
+        name: Yup.string().required('Nom est requis'),
+        email: Yup.string().email('Email non valide').required('Email est requis'),
+        phone: Yup.string().required('Téléphone est requis'),
+        website: Yup.string().required('Site web est requis'),
+        about: Yup.string().required('A propos est requis'),
+        region_id: Yup.string().required('Région est requis'),
+        selectedFile: Yup.mixed().required('Photo est requise'),
+    });
+
+    const handleBlur = async (e) => {
+        const { name, value } = e.target;
+        try {
+            await Yup.reach(validationSchema, name).validate(value);
+            setErrors({
+
+            });
+            setErrMSG('')
+        } catch (error) {
+            console.log(error.message)
+            toast.error(error)
+            setErrMSG(error.message)
+            setErrors({
+                ...errors,
+                [name]: error.message,
+            });
+        }
+    };
+    const hasErrors = Object.values(errors).some((error) => error !== null);
+
     return (
         <div className="App">
             <HedaerBloc />
@@ -89,11 +124,11 @@ function AddNewPartnerPage() {
                         <form onSubmit={(e) => { e.preventDefault(); addData(); }} >
                             <div className="form-group mb-3">
                                 <label htmlFor="">Nom</label>
-                                <input type="text" className='form-control' value={name} onChange={(e) => { setName(e.target.value) }} />
+                                <input onBlur={handleBlur} type="text" className='form-control' value={name} onChange={(e) => { setName(e.target.value) }} />
                             </div>
                             <div className="form-group mb-3">
                                 <label htmlFor="">Photo URL</label>
-                                <input type="file" className='form-control' onChange={handleFileChange} />
+                                <input onBlur={handleBlur} type="file" className='form-control' onChange={handleFileChange} />
                             </div>
                             <div className="form-group mb-3">
                                 <img src={previewImage} alt="upload image" />
@@ -101,15 +136,15 @@ function AddNewPartnerPage() {
 
                             <div className="form-group mb-3">
                                 <label htmlFor="">email</label>
-                                <input type="text" className='form-control' value={email} onChange={(e) => { setEmail(e.target.value) }} />
+                                <input onBlur={handleBlur} type="text" className='form-control' value={email} onChange={(e) => { setEmail(e.target.value) }} />
                             </div>
                             <div className="form-group mb-3">
                                 <label htmlFor="">Télephone</label>
-                                <input type="text" className='form-control' value={phone} onChange={(e) => { setPhone(e.target.value) }} />
+                                <input onBlur={handleBlur} type="text" className='form-control' value={phone} onChange={(e) => { setPhone(e.target.value) }} />
                             </div>
                             <div className="form-group mb-3">
                                 <label htmlFor="">Site web</label>
-                                <input type="text" className='form-control' value={website} onChange={(e) => { setWebsite(e.target.value) }} />
+                                <input onBlur={handleBlur} type="text" className='form-control' value={website} onChange={(e) => { setWebsite(e.target.value) }} />
                             </div>
                             <div className="form-group mb-3">
                                 <label htmlFor="">Région</label>

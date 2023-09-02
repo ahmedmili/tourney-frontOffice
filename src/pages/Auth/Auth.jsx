@@ -6,12 +6,23 @@ import { toast } from 'react-toastify'
 import {
   useNavigate
 } from "react-router-dom"
+import * as Yup from 'yup';
 
 function Auth() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMSG, setErrorMSG] = useState('');
+  const [errors, setErrors] = useState({});
+
   const Navigate = useNavigate();
+
+  
+  const validationSchema = Yup.object().shape({
+    username: Yup.string().required('username is required'),
+    password: Yup.string()
+      .min(8, 'Password must be at least 8 characters')
+      .required('Password is required'),
+  });
 
   function authUser() {
 
@@ -41,7 +52,25 @@ function Auth() {
       }
     })
   }
+  const handleBlur = async (e) => {
+    const { name, value } = e.target;
+    try {
+      await Yup.reach(validationSchema, name).validate(value);
+      setErrors({
 
+      });
+      setErrorMSG('')
+    } catch (error) {
+      console.log(error.message)
+      toast.error(error)
+      setErrorMSG(error.message)
+      setErrors({
+        ...errors,
+        [name]: error.message,
+      });
+    }
+  };
+  const hasErrors = Object.values(errors).some((error) => error !== null);
 
   return (
     <div className="container">
@@ -65,16 +94,16 @@ function Auth() {
                     authUser();
                   }}>
                     <div className="col-12">
-                      <label for="yourUsername" className="form-label">Nom d'utilisateur</label>
+                      <label for="username" className="form-label">Nom d'utilisateur</label>
                       <div className="input-group has-validation">
                         <span className="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" name="username" className="form-control" id="yourUsername" onChange={(e) => { setUsername(e.target.value) }} value={username} />
+                        <input onBlur={handleBlur} type="text" name="username" className="form-control" id="username" onChange={(e) => { setUsername(e.target.value) }} value={username} />
                         <div className="invalid-feedback">Entrez votre nom d'utilisateur.</div>
                       </div>
                     </div>
                     <div className="col-12">
-                      <label for="yourPassword" className="form-label">Mot de passe</label>
-                      <input type="password" name="password" className="form-control" id="yourPassword" onChange={(e) => { setPassword(e.target.value) }} value={password} />
+                      <label for="password" className="form-label">Mot de passe</label>
+                      <input onBlur={handleBlur} type="password" name="password" className="form-control" id="password" onChange={(e) => { setPassword(e.target.value) }} value={password} />
                       <div className="invalid-feedback">Entrez votre mot de passe</div>
                     </div>
                     <div className="col-12">
@@ -85,7 +114,7 @@ function Auth() {
                     </div>
                     {
                       errorMSG !== '' ?
-                        <div classNameName='alert alert-danger mt-3'>{errorMSG}</div>
+                        <div className='alert alert-danger mt-3'>{errorMSG}</div>
                         :
                         <div></div>
                     }
