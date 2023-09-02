@@ -31,6 +31,7 @@ async function registerUser(values) {
         throw error;
     }
 }
+
 async function getUser(user_id) {
     try {
         if (user_id === undefined) {
