@@ -24,6 +24,7 @@ const SearchPage = () => {
   useEffect(() => {
     checkUserAuth();
     getRegionList();
+    searchFor()
   }, [])
 
 
@@ -39,7 +40,7 @@ const SearchPage = () => {
   async function searchFor() {
     const { data, message, success } = await regionService.searchFor(region, keywords)
     if (data) {
-      setSearchResult(data)
+      setSearchResult(data.result)
     } else {
       toast.error(message)
     }
@@ -89,10 +90,14 @@ const SearchPage = () => {
               <div className="col-md-6 mb-2">
                 <div className="form-group ">
                   <label className="pb-2" htmlFor="Type">Région</label>
-                  <select onChange={(e) => { setRegion(e.target.value) }} className="form-control form-control-lg form-control-a" id="Type">
+                  <select onChange={(e) => {
+                    const selectedOption = e.target.value
+                    setRegion(selectedOption);
+
+                  }} className="form-control form-control-lg form-control-a" id="Type">
                     {
                       regions.map((r, i) => {
-                        return <option key={i} value={r.id_region}>{r.label}</option>
+                        return <option key={i} value={r.id}>{r.label}</option>
                       })
                     }
                   </select>

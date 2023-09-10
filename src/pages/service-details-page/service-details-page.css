@@ -1,0 +1,12 @@
+.news-img-box{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.details-para{
+    width: 80vw;
+    font-size: 18px;
+    font-weight: 400;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}

@@ -9,13 +9,14 @@ function ForgetPassword() {
   const changeEmail = (email) => {
     setEmail(email)
   }
-  const handleSubmit = () => {
-    userService.ForgetPassword()
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    userService.forgetPassword(email)
   }
   return (
     <div className="forget-password-container">
       <h3 className="title">Forget Password <span>*</span> </h3>
-      <form action="">
+      <form onSubmit={handleSubmit}>
         <label htmlFor="forget-input">Email</label>
         <input
           className="form-control"
@@ -27,7 +28,7 @@ function ForgetPassword() {
           }
           value={email}
         />
-        <button onClick={handleSubmit} className="btn btn-warning">Forget Password</button>
+        <button type="submit" className="btn btn-warning">Forget Password</button>
       </form>
 
     </div>

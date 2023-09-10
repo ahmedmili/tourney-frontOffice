@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { ServicesService } from "../../services/API/Services"
 import { toast } from 'react-toastify';
 
-
+import './service-details-page.css'
 export default function PartnersDetailsPage() {
 
   const navigate = useNavigate()
@@ -27,9 +27,10 @@ export default function PartnersDetailsPage() {
     }
   }
   async function searchFor() {
-    const { data,  success } = await ServicesService.searchFor(params.id);
+    const { data, success } = await ServicesService.searchFor(params.id);
     if (data) {
-      setPartner(data.data)
+      // console.log(data.result[0])
+      setPartner(data.result[0])
     } else toast.error("message")
   }
   async function addToMyCalendar() {
@@ -37,10 +38,10 @@ export default function PartnersDetailsPage() {
 
     var raw = JSON.stringify({ "date": date, "heure": heure, "more": more, 'partner_id': partnerID });
     const { code, message, success } = await ServicesService.addToMyCalendar(raw)
-    if(code == 200){
+    if (code == 200) {
       toast.success(message)
       navigate("/search")
-    }else toast.error(message)
+    } else toast.error(message)
   }
 
   return (
@@ -73,12 +74,15 @@ export default function PartnersDetailsPage() {
       <div className='container'>
         {
           partner != null ?
-            <div>
+            (<div>
               <div className="col-sm-12">
                 <div className="news-img-box">
-                  <img src={partner.logo_url} alt="" className="img-fluid" />
+                  <img src={process.env.REACT_APP_IMAGE_BASE_URL + partner.logo_url} alt="" className="img-fluid" />
                 </div>
               </div>
+              <p className='details-para'>
+                {partner.about}
+              </p>
               <div className="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
                 <div className="post-information">
                   <ul className="list-inline text-center color-a">
@@ -127,9 +131,11 @@ export default function PartnersDetailsPage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div>)
             :
-            null
+            (<>
+
+            </>)
         }
       </div>
       { /* ======= Footer ======= */}

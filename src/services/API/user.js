@@ -96,7 +96,7 @@ async function addPartner(value) {
 
 async function forgetPassword(email) {
     try {
-        const response = await api.post("partners/create", {email:email} );
+        const response = await api.post("clients/forget_password", {email:email} );
         console.log(response)
         // const { success, code, message } = response.data;
         // return { success, code, message };
@@ -115,4 +115,5 @@ export const userService = {
     getMyAgenda,
     deleteProgram,
     addPartner,
+    forgetPassword,
 };

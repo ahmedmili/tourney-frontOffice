@@ -24,6 +24,7 @@ export default function Profile() {
 
     const { data } = await userService.getMyAgenda()
     setPrograms(data.data)
+    console.log(data.data)
   }
 
   async function deleteProgram(id) {
@@ -65,10 +66,10 @@ export default function Profile() {
             {
               programs.map((p) => {
                 return (
-                  <li className="list-group-item">
+                  <li key={p.id} className="list-group-item">
                     <div className="d-flex">
                       <div>
-                        <img src={process.env.REACT_APP_IMAGE_BASE_URL+p.logo_url} width={80} style={{ marginRight: 25 }} alt="" />
+                        <img src={process.env.REACT_APP_IMAGE_BASE_URL+p.Partner.logo_url} width={80} style={{ marginRight: 25 }} alt="" />
                       </div>
                       <div className='w-100'>
                         <div className='d-flex justify-content-between'>
@@ -79,7 +80,7 @@ export default function Profile() {
                             <p><small>{p.date}</small> <small>{p.heure}</small></p>
                           </div>
                           <div className="delete">
-                            <i class="bi bi-trash text-danger" style={{ fontSize: 30 }} onClick={() => {
+                            <i className="bi bi-trash text-danger" style={{ fontSize: 30 }} onClick={() => {
                               const id = p.id_prog;
                               deleteProgram(id);
                             }}  ></i>

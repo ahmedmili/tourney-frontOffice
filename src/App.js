@@ -15,7 +15,7 @@ import AuthPage from './pages/Auth/Auth';
 
 import CreateAccountPage from './pages/create-account/create-account';
 import SearchPage from './pages/search-page/search-page';
-import PartnersDetailsPage from './pages/searvice-details-page/searvice-details-page';
+import PartnersDetailsPage from './pages/service-details-page/service-details-page';
 import ProfilePage from './pages/Profile/Profile';
 import AddPartnairePage from './pages/add-partner/add-partner';
 
