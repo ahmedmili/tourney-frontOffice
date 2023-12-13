@@ -89,13 +89,13 @@ export default class ClientsPage extends React.Component {
                 { /* End Sidebar*/}
 
                 <main id="main" className="main">
-                    <div class="pagetitle">
+                    <div className="pagetitle">
                         <h1>Clients</h1>
 
                     </div>
 
 
-                    <div class="pagetitle">
+                    <div className="pagetitle">
                         <div className='form-group'>
                             <input type="search" className='form-control' onChange={ (e)=>{ this.setState({ filter: e.target.value}) } } />
                         </div>
@@ -104,14 +104,14 @@ export default class ClientsPage extends React.Component {
 
 
 
-                    <section class="section">
-                        <div class="row">
-                            <div class="col-lg-12">
+                    <section className="section">
+                        <div className="row">
+                            <div className="col-lg-12">
 
-                                <div class="card">
-                                    <div class="card-body">
+                                <div className="card">
+                                    <div className="card-body">
                                         <div className="d-flex justify-content-between">
-                                            <h5 class="card-title">Clients list</h5>
+                                            <h5 className="card-title">Clients list</h5>
 
                                             <Link to={ '/clients/add' } className="btn btn-success add-btn" ><i className='bx bxs-plus-circle'></i> Ajouter un client</Link>
                                         </div>

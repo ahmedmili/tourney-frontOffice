@@ -87,7 +87,7 @@ export default class AddNewClient extends React.Component {
         { /* End Sidebar*/}
 
         <main id="main" className="main"> 
-            <div class="pagetitle">
+            <div className="pagetitle">
                 <h1>Welcome back</h1> 
             </div> 
 
