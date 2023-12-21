@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { localStorageService } from "../../services/localStorageService";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 export default function HedaerBloc() {
   const navigate = useNavigate();
   const loggedIn = localStorageService.getUserToken() ? true : false;
@@ -9,6 +10,7 @@ export default function HedaerBloc() {
     localStorageService.unsetUserCredentials()
     navigate('/')
   }
+  const {t} = useTranslation()
 
   return (
     <nav className="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
@@ -24,12 +26,12 @@ export default function HedaerBloc() {
           <ul className="navbar-nav">
 
             <li className="nav-item">
-              <Link className="nav-link" to={'/'}>Bienvenue</Link>
+              <Link className="nav-link" to={'/'}>{t('welcome')}</Link>
             </li>
             {
               loggedIn && (
                 <li className="nav-item" onClick={LogOut}>
-                  <Link className="nav-link" to={'/'}>logout</Link>
+                  <Link className="nav-link" to={'/'}>{t('logout')}</Link>
                 </li>
               )
             }
@@ -39,7 +41,7 @@ export default function HedaerBloc() {
               <Link className="nav-link" to={'/addPartenaire'}>Contact </Link>
             </li>
             <li className="nav-item">
-              <Link to={'/profile'} className="nav-link ">Profile </Link>
+              <Link to={'/profile'} className="nav-link ">{t('profile')} </Link>
             </li>
           </ul>
         </div>

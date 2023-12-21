@@ -5,12 +5,14 @@ import HedaerBloc from '../../components/Header/Header';
 import { useNavigate } from 'react-router-dom'
 import { userService } from '../../services/API/user';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 export default function Profile() {
   const navigate = useNavigate()
   const [programs, setPrograms] = useState([]);
 
+  const {t} = useTranslation()
   function checkUserAuth() {
-    if (localStorage.getItem('token') == null) {
+    if (localStorage.getItem('token') === null) {
       navigate('/auth');
 
     }
@@ -29,7 +31,7 @@ export default function Profile() {
 
   async function deleteProgram(id) {
     const { success } = await userService.deleteProgram(id)
-    success == true ? toast.success("success") : toast.error("delation failed")
+    success === true ? toast.success("success") : toast.error("delation failed")
   }
   return (
     <div >
@@ -39,18 +41,18 @@ export default function Profile() {
           <div className="row">
             <div className="col-md-12 col-lg-8">
               <div className="title-single-box">
-                <h1 className="title-single">Mon profile</h1>
-                <span className="color-text-a">profile</span>
+                <h1 className="title-single">{t('profile.MonProfile')}</h1>
+                <span className="color-text-a">{t('profile')}</span>
               </div>
             </div>
             <div className="col-md-12 col-lg-4">
               <nav aria-label="breadcrumb" className="breadcrumb-box d-flex justify-content-lg-end">
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <a href="">Acceuil</a>
+                    <a href="">{t('Acceuil')}</a>
                   </li>
                   <li className="breadcrumb-item active" aria-current="page">
-                    Mon profile
+                    {t('profile.MonProfile')}
                   </li>
                 </ol>
               </nav>
@@ -61,7 +63,7 @@ export default function Profile() {
       <div className='container'>
         <div className="row mt-5 mb-5">
           <EvaluatePlatform />
-          <h3>Mon agenda</h3>
+          <h3>{t('profile.MonAgenda')}</h3>
           <ul className="list-group">
             {
               programs.map((p) => {

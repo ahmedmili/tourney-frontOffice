@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import Footer from '../../components/footer/footer';
-import HedaerBloc from '../../components/Header/Header';
-import './add-partner.css'
 import { useNavigate } from 'react-router-dom';
-import { localStorageService } from '../../services/localStorageService'
-import { userService } from '../../services/API/user';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup'; // Import Yup
+import HedaerBloc from '../../components/Header/Header';
+import Footer from '../../components/footer/footer';
+import { userService } from '../../services/API/user';
+import { localStorageService } from '../../services/localStorageService';
+import './add-partner.css';
+import { useTranslation } from 'react-i18next';
 
 function AddNewPartnerPage() {
     const [name, setName] = useState('');
-    // const [logo_url, setLogo_url] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
 
     const [phone, setPhone] = useState('');
@@ -24,11 +24,11 @@ function AddNewPartnerPage() {
 
     const [regions, setRegions] = useState([]);
     const Navigate = useNavigate();
-
+    const { t } = useTranslation()
     const [previewImage, setPreviewImage] = useState(null);
 
     function checkUserAuth() {
-        localStorageService.getUserToken() == '' && Navigate('/auth')
+        localStorageService.getUserToken() === '' && Navigate('/auth')
     }
     //upload file
     const handleFileChange = (event) => {
@@ -84,13 +84,13 @@ function AddNewPartnerPage() {
     }
 
     const validationSchema = Yup.object().shape({
-        name: Yup.string().required('Nom est requis'),
-        email: Yup.string().email('Email non valide').required('Email est requis'),
-        phone: Yup.string().required('Téléphone est requis'),
-        website: Yup.string().required('Site web est requis'),
-        about: Yup.string().required('A propos est requis'),
-        region_id: Yup.string().required('Région est requis'),
-        selectedFile: Yup.mixed().required('Photo est requise'),
+        name: Yup.string().required(`${'yup.nom.required'}`),
+        email: Yup.string().email(`${t('yup.email.invalide')}`).required(`${t('yup.email.required')}`),
+        phone: Yup.string().required(`${t('yup.phone.required')}`),
+        website: Yup.string().required(`${t('yup.web.required')}`),
+        about: Yup.string().required(`${t('yup.propos.required')}`),
+        region_id: Yup.string().required(`${t('yup.region.required')}`),
+        selectedFile: Yup.mixed().required(`${t('yup.photo.required')}`),
     });
 
     const handleBlur = async (e) => {
@@ -120,14 +120,14 @@ function AddNewPartnerPage() {
             <main id="main" className="main">
                 <div className="card">
                     <div className="card-body">
-                        <h3>Add partenair demande </h3>
+                        <h3>{t('partnair.add')} </h3>
                         <form onSubmit={(e) => { e.preventDefault(); addData(); }} >
                             <div className="form-group mb-3">
-                                <label htmlFor="">Nom</label>
+                                <label htmlFor="">{t('Nom')}</label>
                                 <input onBlur={handleBlur} type="text" className='form-control' value={name} onChange={(e) => { setName(e.target.value) }} />
                             </div>
                             <div className="form-group mb-3">
-                                <label htmlFor="">Photo URL</label>
+                                <label htmlFor="">{t('PhotoURL')}</label>
                                 <input onBlur={handleBlur} type="file" className='form-control' onChange={handleFileChange} />
                             </div>
                             <div className="form-group mb-3">
@@ -135,19 +135,19 @@ function AddNewPartnerPage() {
                             </div>
 
                             <div className="form-group mb-3">
-                                <label htmlFor="">email</label>
+                                <label htmlFor="">{t('email')}</label>
                                 <input onBlur={handleBlur} type="text" className='form-control' value={email} onChange={(e) => { setEmail(e.target.value) }} />
                             </div>
                             <div className="form-group mb-3">
-                                <label htmlFor="">Télephone</label>
+                                <label htmlFor="">{t('phone')}</label>
                                 <input onBlur={handleBlur} type="text" className='form-control' value={phone} onChange={(e) => { setPhone(e.target.value) }} />
                             </div>
                             <div className="form-group mb-3">
-                                <label htmlFor="">Site web</label>
+                                <label htmlFor="">{t('webSite')}</label>
                                 <input onBlur={handleBlur} type="text" className='form-control' value={website} onChange={(e) => { setWebsite(e.target.value) }} />
                             </div>
                             <div className="form-group mb-3">
-                                <label htmlFor="">Région</label>
+                                <label htmlFor="">{t('region')}</label>
                                 <select className='form-control' value={region_id} onChange={(e) => { setRegion_id(e.target.value) }} >
 
                                     {
@@ -159,23 +159,19 @@ function AddNewPartnerPage() {
                                 </select>
                             </div>
                             <div className="form-group mb-3">
-                                <label htmlFor="">A propos</label>
+                                <label htmlFor="">{t('aProps')}</label>
                                 <textarea type="text" className='form-control' value={about} onChange={(e) => { setAbout(e.target.value) }} ></textarea>
                             </div>
                             <div className="form-group mb-3">
                                 <button type='submit' className='btn btn-success' disabled={name === '' || selectedFile === null || email === '' || phone === '' || website === '' || about === ''}>Ajouter</button>
                             </div>
                             {
-                                errMSG !== '' ?
-                                    <div className='alert alert-danger'>{errMSG}</div>
-                                    :
-                                    <div></div>
+                                errMSG !== '' && <div className='alert alert-danger'>{errMSG}</div>
+
+
                             }
                             {
-                                succMSG !== '' ?
-                                    <div className='alert alert-success'>{succMSG}</div>
-                                    :
-                                    <div></div>
+                                succMSG !== '' && <div className='alert alert-success'>{succMSG}</div>
                             }
                         </form>
                     </div>

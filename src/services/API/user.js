@@ -15,7 +15,6 @@ async function loginUser(values) {
     }
 }
 async function registerUser(values) {
-    // console.log(values)
     try {
         const response = await api.post("clients/signup", {
             fullname: values.fullname,
@@ -26,7 +25,7 @@ async function registerUser(values) {
             phone: values.phone,
         }, { authorization: false });
         const message = response.data.message;
-        if (response.data.status == 200) {
+        if (response.data.status === 200) {
             return { success: true, message: message }
         }else
             return {success:false,message:message}

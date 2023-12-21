@@ -1,5 +1,7 @@
+import { useTranslation } from "react-i18next";
+
 export default function Footer(){
-   
+   const {t} = useTranslation()
    return(
 
     <footer>
@@ -9,19 +11,19 @@ export default function Footer(){
           <nav className="nav-footer">
             <ul className="list-inline">
               <li className="list-inline-item">
-                <a href="#">Home</a>
+                <a href="#">{t('Home')}</a>
               </li>
               <li className="list-inline-item">
-                <a href="#">About</a>
+                <a href="#">{t('About')}</a>
               </li>
               <li className="list-inline-item">
-                <a href="#">Property</a>
+                <a href="#">{t('Property')}</a>
               </li>
               <li className="list-inline-item">
-                <a href="#">Blog</a>
+                <a href="#">{t('Blog')}</a>
               </li>
               <li className="list-inline-item">
-                <a href="#">Contact</a>
+                <a href="#">{t('Contact')}</a>
               </li>
             </ul>
           </nav>
@@ -51,8 +53,8 @@ export default function Footer(){
           </div>
           <div className="copyright-footer">
             <p className="copyright color-text-a">
-              &copy; Copyright
-              <span className="color-a">EstateAgency</span> All Rights Reserved.
+              &copy; {t('Copyright')}
+              <span className="color-a">tourney</span> {t('AllRightsReserved')}.
             </p>
           
           

@@ -20,7 +20,7 @@ async function addToMyCalendar(data) {
         
         const response = await api.post("partners/add",data);
         const {message,success,code} = response.data
-        if (code == 200) {
+        if (code === 200) {
             return {code,message, success  };
         }
          else {

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 function EvaluatePlatform() {
+  const { t } = useTranslation()
 
   const [state, setState] = useState(
     {
@@ -12,11 +14,11 @@ function EvaluatePlatform() {
 
   return (
     <div className='container' >
-      <h3>évaluer notre platform</h3>
-      <p className='text-muted'>donnez-nous un avis rapide afin d'améliorer nos système</p>
+      <h3>{t('evaluation.evaluatePlatform')}</h3>
+      <p className='text-muted'>{t('evaluation.giveAvis')}</p>
 
       {
-        this.state.thankYou === false ?
+        state.thankYou === false ?
           <div>
             {
               state.stars.map(() => {
@@ -46,7 +48,7 @@ function EvaluatePlatform() {
           :
           <div>
             <div className="alert alert-success">
-              Merci d'avoir examiné notre système
+              {t('evaluation.thanksForNote')}
             </div>
           </div>
       }

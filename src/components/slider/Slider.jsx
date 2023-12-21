@@ -1,12 +1,16 @@
-import { useState, useEffect } from "react";
-// import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
+import { NavLink } from 'react-router-dom';
 import { sliderData } from "../../slider-data";
-import {Link, NavLink} from 'react-router-dom'
+
 import "./Slider.css";
 
-const Slider = () => {
+const Slider = () => 
+{
   const [currentSlide, setCurrentSlide] = useState(0);
   const slideLength = sliderData.length;
+
+  const {t} = useTranslation()
 
   const autoScroll = true;
   let slideInterval;
@@ -14,7 +18,6 @@ const Slider = () => {
 
   const nextSlide = () => {
     setCurrentSlide(currentSlide === slideLength - 1 ? 0 : currentSlide + 1);
-    console.log("next");
   };
 
   function auto() {
@@ -48,9 +51,7 @@ const Slider = () => {
                   <hr />
                  
                   <NavLink to={'/search'}>
-                    <button  >commancer</button>  
-                    
-
+                    <button  >{t('commancer')}</button>  
                   </NavLink>
                 </div>
               </div>

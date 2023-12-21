@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import AsideMenu from '../../components/AsideMenu/AsideMenu';
-import EvaluatePlatform from '../../components/evaluateApp/evaluateApp';
-import Footer from '../../components/footer/footer';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 import HedaerBloc from '../../components/Header/Header';
 import PartnersSearchGridList from '../../components/PartnersSearchGridList/PartnersSearchGridList';
-import { useNavigate } from "react-router-dom"
-import { regionService } from "../../services/API/Region"
-import { toast } from 'react-toastify';
+import EvaluatePlatform from '../../components/evaluateApp/evaluateApp';
+import Footer from '../../components/footer/footer';
+import { regionService } from "../../services/API/Region";
 const SearchPage = () => {
 
   const [regions, setRegions] = useState([]);
@@ -14,9 +14,9 @@ const SearchPage = () => {
   const [keywords, setKeywords] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const navigate = useNavigate();
-
+  const { t } = useTranslation()
   function checkUserAuth() {
-    if (localStorage.getItem('token') == null) {
+    if (localStorage.getItem('token') === null) {
       navigate('/auth');
     }
   }
@@ -54,18 +54,18 @@ const SearchPage = () => {
           <div className="row">
             <div className="col-md-12 col-lg-8">
               <div className="title-single-box">
-                <h1 className="title-single">Rechercher une service</h1>
-                <span className="color-text-a">recherche</span>
+                <h1 className="title-single">{t('searchPage.service')}</h1>
+                <span className="color-text-a">{t('recherche')}</span>
               </div>
             </div>
             <div className="col-md-12 col-lg-4">
               <nav aria-label="breadcrumb" className="breadcrumb-box d-flex justify-content-lg-end">
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <a href="">Acceuil</a>
+                    <a href="">{t('Acceuil')}</a>
                   </li>
                   <li className="breadcrumb-item active" aria-current="page">
-                    Nos services
+                    {t('ourServices')}
                   </li>
                 </ol>
               </nav>
@@ -76,20 +76,20 @@ const SearchPage = () => {
       <div className='container'>
 
         <div className="title-box-d">
-          <h3 className="title-d">Filter des recherche</h3>
+          <h3 className="title-d">{t('recherche.filter')}</h3>
         </div>
         <div className="box-collapse- form">
           <form className="form-a" onSubmit={(e) => { e.preventDefault(); searchFor() }}>
             <div className="row">
               <div className="col-md-6 mb-2">
                 <div className="form-group">
-                  <label className="pb-2" htmlFor="Type">Mot clé</label>
-                  <input onChange={(e) => { setKeywords(e.target.value) }} type="text" className="form-control form-control-lg form-control-a" placeholder="mot clé" />
+                  <label className="pb-2" htmlFor="Type">{t('keyWord')}</label>
+                  <input onChange={(e) => { setKeywords(e.target.value) }} type="text" className="form-control form-control-lg form-control-a" placeholder={t('keyWord')} />
                 </div>
               </div>
               <div className="col-md-6 mb-2">
                 <div className="form-group ">
-                  <label className="pb-2" htmlFor="Type">Région</label>
+                  <label className="pb-2" htmlFor="Type">{t('region')}</label>
                   <select onChange={(e) => {
                     const selectedOption = e.target.value
                     setRegion(selectedOption);
@@ -104,7 +104,7 @@ const SearchPage = () => {
                 </div>
               </div>
               <div className="col-md-12 mt-5">
-                <button type="submit" className="btn btn-b">Rechercher</button>
+                <button type="submit" className="btn btn-b">{t('recherche')}</button>
               </div>
             </div>
           </form>

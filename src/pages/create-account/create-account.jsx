@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-// import { object, string, number, date, InferType } from 'yup';
+import { t } from 'i18next';
 import * as Yup from 'yup';
 import { userService } from '../../services/API/user';
 
@@ -21,20 +21,20 @@ export default function CreateAccountPage() {
 
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    lastName: Yup.string().required('Last name is required'),
+    name: Yup.string().required(`${t('yup.nom.required')}`),
+    lastName: Yup.string().required(`${t('yup.lastName.required')}`),
     email: Yup.string()
-      .email('Invalid email format')
-      .required('Email is required'),
+      .email(`${t('Email non valide')}`)
+      .required(`${t('yup.email.required')}`),
     password: Yup.string()
-      .min(8, 'Password must be at least 8 characters')
-      .required('Password is required'),
+      .min(8, `${t('yup.password.min')}`)
+      .required(`${t('Password is required')}`),
     phone: Yup.string()
       .matches(
         /^[0-9]{8}$/,
-        'Phone number must be a 8-digit number (e.g., 1234567890)'
+        `${t('yup.phone.invalideFormat')}`
       )
-      .required('Phone number is required'),
+      .required(`${t('yup.phone.required')}`),
   });
 
   const handleBlur = async (e) => {
@@ -100,7 +100,7 @@ export default function CreateAccountPage() {
                 <div className="card-body">
 
                   <div className="pt-4 pb-2">
-                    <h5 className="card-title text-center pb-0 fs-4">Create Your Account</h5>
+                    <h5 className="card-title text-center pb-0 fs-4">{t('CreateYourAccount')}</h5>
                   </div>
 
                   <form className="row g-3 needs-validation" novalidate onSubmit={(e) => {
@@ -109,7 +109,7 @@ export default function CreateAccountPage() {
                   }}>
 
                     <div className="col-12">
-                      <label htmlFor="email" className="form-label">Email</label>
+                      <label htmlFor="email" className="form-label">{t('email')}</label>
                       <div className="input-group has-validation">
                         <span className="input-group-text" id="inputGroupPrepend">@</span>
                         <input onBlur={handleBlur} type="text" name="email" className="form-control" id="email" onChange={(e) => { setEmail(e.target.value) }} value={email} />
@@ -118,7 +118,7 @@ export default function CreateAccountPage() {
                     </div>
 
                     <div className="col-12">
-                      <label htmlFor="name" className="form-label">nom</label>
+                      <label htmlFor="name" className="form-label">{t('Nom')}</label>
                       <div className="input-group has-validation">
                         <span className="input-group-text" id="inputGroupPrepend">@</span>
                         <input onBlur={handleBlur} type="text" name="name" className="form-control" id="name" onChange={(e) => { setName(e.target.value) }} value={name} />
@@ -126,7 +126,7 @@ export default function CreateAccountPage() {
                       </div>
                     </div>
                     <div className="col-12">
-                      <label htmlFor="lastName" className="form-label">prénom</label>
+                      <label htmlFor="lastName" className="form-label">{t('lastName')}</label>
                       <div className="input-group has-validation">
                         <span className="input-group-text" id="inputGroupPrepend">@</span>
                         <input onBlur={handleBlur} type="text" name="lastName" className="form-control" id="lastName" onChange={(e) => { setLastName(e.target.value) }} value={lastName} />
@@ -135,25 +135,25 @@ export default function CreateAccountPage() {
                     </div>
 
                     <div className="col-12">
-                      <label htmlFor="password" className="form-label">mot de passe</label>
+                      <label htmlFor="password" className="form-label">{t('password')}</label>
                       <input onBlur={handleBlur} type="password" name="password" className="form-control" id="password" onChange={(e) => { setPassword(e.target.value) }} value={password} />
-                      <div className="invalid-feedback">Please enter your password!</div>
+                      <div className="invalid-feedback">{t('tapezPasswordPls')}!</div>
                     </div>
 
                     <div className="col-12">
-                      <label htmlFor="confirmPassword" className="form-label">confirmé mot de passe</label>
+                      <label htmlFor="confirmPassword" className="form-label">{t('confirmPassword')}</label>
                       <input type="password" name="confirmPassword" className="form-control" id="confirmPassword" onChange={(e) => { setConfirmPassword(e.target.value) }} value={confirmPassword} />
-                      <div className="invalid-feedback">Please enter your password again!</div>
+                      <div className="invalid-feedback">{t('tapezConfirmPasswordPls')}</div>
                     </div>
 
                     <div className="col-12">
-                      <label htmlFor="phone" className="form-label">phone</label>
+                      <label htmlFor="phone" className="form-label">{t('phone')}</label>
                       <input onBlur={handleBlur} type="text" name="phone" className="form-control" id="phone" onChange={(e) => { setPhone(e.target.value) }} value={phone} />
-                      <div className="invalid-feedback">Please enter your phone number</div>
+                      <div className="invalid-feedback">{t('tapezPhonePls')}</div>
                     </div>
 
                     <div className="col-12">
-                      <button className="btn btn-primary w-100" type="submit" disabled={hasErrors} >Create account</button>
+                      <button className="btn btn-primary w-100" type="submit" disabled={hasErrors} >{t('createAccount')}</button>
                     </div>
 
                     {
@@ -164,7 +164,7 @@ export default function CreateAccountPage() {
                     }
 
                     <div className="col-12">
-                      <p className="small mb-0">back to <Link to="/auth">sign in</Link></p>
+                      <p className="small mb-0">{t('backTo')} <Link to="/auth">{t('Login')}</Link></p>
                     </div>
                   </form>
 
